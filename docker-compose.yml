@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  app:
+    image: 'assessment:latest'
+    build:
+      context: .
+    container_name: mediagenix-test
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5433/docker_books_db
+      - SPRING_DATASOURCE_USERNAME=books_user
+      - SPRING_DATASOURCE_PASSWORD=books_pass_123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8080:8080"
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: postgres-db
+    environment:
+      - PGPORT=5433
+      - POSTGRES_DB=docker_books_db
+      - POSTGRES_USER=books_user
+      - POSTGRES_PASSWORD=books_pass_123
+    ports:
+      - "5433:5433"
